@@ -3,19 +3,31 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+
+	"fmt"
 )
 
 // Display all from the people var
 func GetCambio(w http.ResponseWriter, r *http.Request) {
-	cambioJson, err := json.Marshal(cambios)
+
+	listaCambios := cambios{}
+	err := RepoGetCambio(&listaCambios)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	cambioJson, err := json.Marshal(listaCambios)
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Println(listaCambios)
 	setRequest(w, cambioJson)
 }
 
-func setRequest(w http.ResponseWriter, peopleJson []uint8) {
-	w.Header().Set("Content-Type", "application/json")
+func setRequest(w http.ResponseWriter, cambioJson []uint8) {
+	w.Header().Set("Content-Type", "application/json;charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	w.Write(peopleJson)
+	w.Write(cambioJson)
 }

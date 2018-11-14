@@ -3,9 +3,13 @@ package main
 import ("time")
 
 type Cambio struct {
-    id        int   `json:"-"`
-    data time.Time
-    valorOrigem float64
-    valorDestino float64
-    tipoCambio TipoCambio
+    Id                int `json:"-"`
+    Data              time.Time `json:"data,omitempty"`
+    ValorOrigem       float64 `json:"valorOrigem,omitempty"`
+    ValorDestino      float64 `json:"valorDestino,omitempty"`
+    //tipoCambio TipoCambio `json:"tipoCambio,omitempty"`
+}
+
+type cambios struct {
+    ListaCambios      []Cambio `json:"listaCambios,omitempty"`;
 }
