@@ -17,7 +17,7 @@ var routes = Routes{
 	Route{
 		"GetCambio",
 		"GET",
-		"/cambio",
+		"/cambio-api/cambio/{data}",
 		GetCambio,
 	},
 }

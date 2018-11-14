@@ -1,8 +1,7 @@
 package main
 
 type TipoCambio struct {
-	id           int
-	moedaOrigem  string
-	moedaDestino string
-	descricao    string
+	Id           int    `json:"-"`
+	MoedaOrigem  string `json:"moedaOrigem,omitempty"`
+	MoedaDestino string `json:"moedaDestino,omitempty"`
 }

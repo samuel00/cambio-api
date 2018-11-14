@@ -11,9 +11,9 @@ func init() {
 	RepoCreatePerson(Person{ID: "2", Firstname: "Koko", Lastname: "Doe", Address: &Address{City: "City Z", State: "State Y"}})*/
 }
 
-func RepoGetCambio(cambios *cambios) error {
+func RepoGetCambio(cambios *cambios, data string) error {
 	initDb()
-	rows, err := db.Query("SELECT tc_id, tc_data, tc_valor_origem, tc_valor_destino FROM tab_cambio")
+	rows, err := db.Query("SELECT tc_id,tc_data,tc_valor_origem,tc_valor_destino,ttc.id,ttc_moeda_origem,ttc_moeda_destino FROM tab_cambio tc INNER JOIN tab_tipo_cambio ttc ON ttc.id = tc.tc_tipo_cambio where tc_data = '" + data + "'")
 	if err != nil {
 		return err
 	}
@@ -26,6 +26,9 @@ func RepoGetCambio(cambios *cambios) error {
 			&c.Data,
 			&c.ValorOrigem,
 			&c.ValorDestino,
+			&c.TipoCambio.Id,
+			&c.TipoCambio.MoedaOrigem,
+			&c.TipoCambio.MoedaDestino,
 		)
 		if err != nil {
 			return err

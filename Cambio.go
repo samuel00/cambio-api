@@ -7,7 +7,7 @@ type Cambio struct {
     Data              time.Time `json:"data,omitempty"`
     ValorOrigem       float64 `json:"valorOrigem,omitempty"`
     ValorDestino      float64 `json:"valorDestino,omitempty"`
-    //tipoCambio TipoCambio `json:"tipoCambio,omitempty"`
+    TipoCambio        TipoCambio `json:"tipoCambio,omitempty"`
 }
 
 type cambios struct {

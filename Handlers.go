@@ -5,13 +5,15 @@ import (
 	"net/http"
 
 	"fmt"
+
+	"github.com/gorilla/mux"
 )
 
 // Display all from the people var
 func GetCambio(w http.ResponseWriter, r *http.Request) {
-
+	params := mux.Vars(r)
 	listaCambios := cambios{}
-	err := RepoGetCambio(&listaCambios)
+	err := RepoGetCambio(&listaCambios, params["data"])
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
