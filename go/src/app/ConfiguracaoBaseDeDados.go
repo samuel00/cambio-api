@@ -1,13 +1,14 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
+var db *gorm.DB
 
 const (
 	dbhost = "db"
@@ -25,14 +26,11 @@ func initDb() {
 		config[dbhost], config[dbport],
 		config[dbuser], config[dbpass], config[dbname])
 
-	db, err = sql.Open("postgres", psqlInfo)
+	db, err = gorm.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
-	}
-	err = db.Ping()
-	if err != nil {
-		fmt.Println(config[dbhost])
-		panic(err)
+	} else {
+		db.SingularTable(true)
 	}
 	fmt.Println("Successfully connected to DataBase Postgres!")
 }
