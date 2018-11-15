@@ -2,24 +2,16 @@ package main
 
 import (
 	"time"
-
-	"github.com/jinzhu/gorm"
 )
 
 type Cambio struct {
-	gorm.Model
-	TipoCambio      TipoCambio `json:"tipoCambio,omitempty";gorm:"foreignkey:TipoCambioRefer"`
-	TipoCambioRefer uint
-	Id              int       `json:"-"`
-	Data            time.Time `json:"data,omitempty"`
-	ValorOrigem     float64   `json:"valorOrigem,omitempty"`
-	ValorDestino    float64   `json:"valorDestino,omitempty"`
+	TipoCambId   int       `json:"tipoCambio,omitempty" gorm:"column:tc_tipo_cambio;"`
+	Id           int       `json:"-" gorm:"primary_key;column:tc_id"`
+	Data         time.Time `json:"data,omitempty" gorm:"column:tc_data"`
+	ValorOrigem  float64   `json:"valorOrigem,omitempty"  gorm:"column:tc_valor_origem"`
+	ValorDestino float64   `json:"valorDestino,omitempty"  gorm:"column:tc_valor_destino"`
 }
 
-func (Cambio) TableName() string {
+func (cambio *Cambio) TableName() string {
 	return "tab_cambio"
-}
-
-type cambios struct {
-	ListaCambios []Cambio `json:"listaCambios,omitempty"`
 }

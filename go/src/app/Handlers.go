@@ -11,19 +11,22 @@ import (
 // Display all from the people var
 func GetCambio(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	listaCambios := cambios{}
-	err := RepoGetCambio(&listaCambios, params["data"])
+	//cambios := []Cambio{}
+	tipoCambio := []TipoCambio{}
+	err := RepoGetCambio(&tipoCambio, params["data"])
 	if err != nil {
 		http.Error(w, err.Error(), 500)
+		fmt.Println("Erro:----------------------->")
+		fmt.Println(err.Error())
 		return
 	}
 
-	cambioJson, err := json.Marshal(listaCambios)
+	cambioJson, err := json.Marshal(tipoCambio)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(listaCambios)
+	fmt.Println(tipoCambio)
 	setRequest(w, cambioJson)
 }
 

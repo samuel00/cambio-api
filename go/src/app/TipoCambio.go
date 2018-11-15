@@ -1,10 +1,12 @@
 package main
 
-import "github.com/jinzhu/gorm"
-
 type TipoCambio struct {
-	gorm.Model
-	Id           int    `gorm:"id"; json:"-"`
-	MoedaOrigem  string `json:"moedaOrigem,omitempty"`
-	MoedaDestino string `json:"moedaDestino,omitempty"`
+	TipoCambioId int    `gorm:"column:ttc_id" json:"-"`
+	MoedaOrigem  string `gorm:"column:ttc_moeda_origem" json:"moedaOrigem,omitempty"`
+	MoedaDestino string `gorm:"column:ttc_moeda_destino" json:"moedaDestino,omitempty"`
+	Cambio       []Cambio
+}
+
+func (tipoCambio *TipoCambio) TableName() string {
+	return "tab_tipo_cambio"
 }
