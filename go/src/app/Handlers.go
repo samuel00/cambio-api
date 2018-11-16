@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -11,27 +12,36 @@ import (
 // Display all from the people var
 func GetCambio(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	cambios := cambios{}
+	listaDecambios := cambios{}
 	//tipoCambio := []TipoCambio{}
-	err := RepoGetCambio(&cambios, params["data"])
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		fmt.Println("Erro:----------------------->")
-		fmt.Println(err.Error())
+	t, error := time.Parse("2006-01-02", params["data"])
+	if error != nil {
+		errorValidate := &ErrorValidate{Mensagem: "O parâmentro informado não corresponde a uma data válida no forma YYYY-MM-DD", HTTPStatus: 400}
+		cambioJson, err := json.Marshal(errorValidate)
+		if err != nil {
+			panic(err)
+		}
+		setRequest(w, cambioJson, http.StatusBadRequest)
 		return
 	}
 
-	cambioJson, err := json.Marshal(cambios)
+	err := RepoGetCambio(&listaDecambios, params["data"])
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	cambioJson, err := json.Marshal(listaDecambios)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(cambios)
-	setRequest(w, cambioJson)
+	fmt.Println(t)
+	setRequest(w, cambioJson, http.StatusOK)
 }
 
-func setRequest(w http.ResponseWriter, cambioJson []uint8) {
+func setRequest(w http.ResponseWriter, cambioJson []uint8, status int) {
 	w.Header().Set("Content-Type", "application/json;charset=utf-8")
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(status)
 	w.Write(cambioJson)
 }
