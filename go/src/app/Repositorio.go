@@ -11,14 +11,25 @@ func init() {
 	RepoCreatePerson(Person{ID: "2", Firstname: "Koko", Lastname: "Doe", Address: &Address{City: "City Z", State: "State Y"}})*/
 }
 
-func RepoGetCambio(cambios *[]TipoCambio, data string) error {
+func RepoGetCambio(cambios *cambios, data string) error {
 	initDb()
-	//rows, err := db.Query("SELECT tc_id,tc_data,tc_valor_origem,tc_valor_destino,ttc.ttc_id,ttc_moeda_origem,ttc_moeda_destino FROM tab_cambio tc INNER JOIN tab_tipo_cambio ttc ON ttc.ttc_id = tc.tc_tipo_cambio where tc_data = '" + data + "'")
-	//db.Where("data = ?", data).Find(&cambios)
-	var tipoCambio TipoCambio
-	var cambio Cambio
-	cambio.Id = 1
-	err := db.Model(&cambio).Related(&tipoCambio).Find(&cambios).Error
+	rows, err := db.Table("tab_cambio").Select("tc_id, tc_data, tc_valor_origem, tc_valor_destino, ttc_moeda_origem, ttc_moeda_destino").Joins("inner join tab_tipo_cambio on tab_tipo_cambio.ttc_id = tc_id where tc_data = '" + data + "'").Rows()
+	for rows.Next() {
+		c := Cambio{}
+		err = rows.Scan(
+			&c.Id,
+			&c.Data,
+			&c.ValorOrigem,
+			&c.ValorDestino,
+			&c.TipoCambio.MoedaOrigem,
+			&c.TipoCambio.MoedaDestino,
+		)
+		if err != nil {
+			return err
+		}
+		cambios.ListaCambios = append(cambios.ListaCambios, c)
+	}
+	err = rows.Err()
 	if err != nil {
 		return err
 	}
