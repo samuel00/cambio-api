@@ -12,7 +12,6 @@ import (
 // Display all from the people var
 func GetCambio(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	listaDecambios := cambios{}
 	//tipoCambio := []TipoCambio{}
 	t, error := time.Parse("2006-01-02", params["data"])
 	if error != nil {
@@ -25,7 +24,10 @@ func GetCambio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := RepoGetCambio(&listaDecambios, params["data"])
+	listaDecambios := cambios{}
+	cambioRepositorio := CambioRepositorio{}
+	cambioServico := CambioServico{cambioRepositorio}
+	err := cambioServico.getCambio(&listaDecambios, params["data"])
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
