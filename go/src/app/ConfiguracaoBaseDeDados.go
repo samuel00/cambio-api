@@ -13,9 +13,9 @@ var db *gorm.DB
 const (
 	dbhost = "db"
 	dbport = "5432"
-	dbuser = "usr_app"
+	dbuser = "usr_cambio"
 	dbpass = "123456"
-	dbname = "usr_app"
+	dbname = "usr_cambio"
 )
 
 func initDb() {

@@ -4,14 +4,14 @@ services:
   app:
    build: .
    ports:
-    - 8000:8000   
+    - 8000:8000
    expose:
-    - 8000   
-   restart: always    
-   networks: 
+    - 8000
+   restart: always
+   networks:
     - production-network
    links:
-    - "db"      
+    - "db"
    depends_on:
     - "db"
 
@@ -22,22 +22,22 @@ services:
     expose:
       - "5432"
     volumes:
-      - .:/var/lib/postgresql    
+      - .:/var/lib/postgresql
     restart: always
     environment:
-      POSTGRES_USER: usr_app
-      POSTGRES_PASSWORD: 123456  
-    networks: 
+      POSTGRES_USER: usr_cambio
+      POSTGRES_PASSWORD: 123456
+    networks:
       - production-network
 
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8080:8080    
-    networks: 
+      - 8080:8080
+    networks:
       - production-network
 
-networks: 
+networks:
     production-network:
         driver: bridge

@@ -1,5 +1,24 @@
 -- Adminer 4.6.3 PostgreSQL dump
 
+DROP TABLE IF EXISTS "tab_tipo_cambio";
+DROP SEQUENCE IF EXISTS tab_tipo_cambio_ttc_id_seq;
+CREATE SEQUENCE tab_tipo_cambio_ttc_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
+
+CREATE TABLE "public"."tab_tipo_cambio" (
+    "ttc_id" integer DEFAULT nextval('tab_tipo_cambio_ttc_id_seq') NOT NULL,
+    "ttc_moeda_origem" text DEFAULT '' NOT NULL,
+    "ttc_moeda_destino" text DEFAULT '' NOT NULL,
+    CONSTRAINT "tab_tipo_cambio_pkey" PRIMARY KEY ("ttc_id")
+) WITH (oids = false);
+
+COMMENT ON COLUMN "public"."tab_tipo_cambio"."ttc_moeda_origem" IS 'Descricao da origem da moeda';
+
+COMMENT ON COLUMN "public"."tab_tipo_cambio"."ttc_moeda_destino" IS 'Descricao do destino da moeda';
+
+INSERT INTO "tab_tipo_cambio" ("ttc_id", "ttc_moeda_origem", "ttc_moeda_destino") VALUES
+(1,	'USA',	'BRL'),
+(2,	'EUR',	'BRL');
+
 DROP TABLE IF EXISTS "tab_cambio";
 DROP SEQUENCE IF EXISTS tab_cambio_tc_id_seq;
 CREATE SEQUENCE tab_cambio_tc_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
@@ -22,25 +41,10 @@ COMMENT ON COLUMN "public"."tab_cambio"."tc_valor_destino" IS 'Valor da moeda de
 
 COMMENT ON COLUMN "public"."tab_cambio"."tc_tipo_cambio" IS 'Indentificador do tipo de cambio';
 
+INSERT INTO "tab_cambio" ("tc_id", "tc_data", "tc_valor_origem", "tc_valor_destino", "tc_tipo_cambio") VALUES
+(1,	'2018-11-21',	1.00,	3.70,	1),
+(2,	'2018-11-21',	1.00,	4.86,	2);
 
-DROP TABLE IF EXISTS "tab_tipo_cambio";
-DROP SEQUENCE IF EXISTS tab_tipo_cambio_ttc_id_seq;
-CREATE SEQUENCE tab_tipo_cambio_ttc_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
 
-CREATE TABLE "public"."tab_tipo_cambio" (
-    "ttc_id" integer DEFAULT nextval('tab_tipo_cambio_ttc_id_seq') NOT NULL,
-    "ttc_moeda_origem" text DEFAULT '' NOT NULL,
-    "ttc_moeda_destino" text DEFAULT '' NOT NULL,
-    CONSTRAINT "constraintname" UNIQUE ("ttc_id"),
-    CONSTRAINT "tab_tipo_cambio_pkey" PRIMARY KEY ("ttc_id")
-) WITH (oids = false);
 
-COMMENT ON COLUMN "public"."tab_tipo_cambio"."ttc_moeda_origem" IS 'Descricao da origem da moeda';
-
-COMMENT ON COLUMN "public"."tab_tipo_cambio"."ttc_moeda_destino" IS 'Descricao do destino da moeda';
-
-INSERT INTO "tab_tipo_cambio" ("ttc_id", "ttc_moeda_origem", "ttc_moeda_destino") VALUES
-(1,	'USA',	'BRL'),
-(2,	'EUR',	'BRL');
-
--- 2018-11-16 18:29:17.563854+00
+-- 2018-11-21 13:42:59.270111+00

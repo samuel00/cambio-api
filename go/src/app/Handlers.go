@@ -15,7 +15,8 @@ func GetCambio(w http.ResponseWriter, r *http.Request) {
 	//tipoCambio := []TipoCambio{}
 	t, error := time.Parse("2006-01-02", params["data"])
 	if error != nil {
-		errorValidate := &ErrorValidate{Mensagem: "O parâmentro informado não corresponde a uma data válida no forma YYYY-MM-DD", HTTPStatus: 400}
+		retorno := RetornoVo{Mensagem: "O parâmentro informado não corresponde a uma data válida no forma YYYY-MM-DD", StatusCode: 400, QuantidadeCambio: 0}
+		errorValidate := &ErrorValidate{Retorno: retorno}
 		cambioJson, err := json.Marshal(errorValidate)
 		if err != nil {
 			panic(err)
@@ -37,14 +38,14 @@ func GetCambio(w http.ResponseWriter, r *http.Request) {
 	var cambioVo CambioVO
 	if len(listaDecambios.ListaCambios) != 0 {
 		cambioVo.Cambios = listaDecambios.ListaCambios
-		cambioVo.QuantidadeCambio = len(listaDecambios.ListaCambios)
-		cambioVo.StatusCode = http.StatusOK
-		cambioVo.Mensagem = http.StatusText(200)
+		cambioVo.Retorno.QuantidadeCambio = len(listaDecambios.ListaCambios)
+		cambioVo.Retorno.StatusCode = http.StatusOK
+		cambioVo.Retorno.Mensagem = http.StatusText(200)
 	} else {
 		cambioVo.Cambios = listaDecambios.ListaCambios
-		cambioVo.QuantidadeCambio = len(listaDecambios.ListaCambios)
-		cambioVo.StatusCode = http.StatusNotFound
-		cambioVo.Mensagem = http.StatusText(404)
+		cambioVo.Retorno.QuantidadeCambio = len(listaDecambios.ListaCambios)
+		cambioVo.Retorno.StatusCode = http.StatusNotFound
+		cambioVo.Retorno.Mensagem = http.StatusText(404)
 	}
 
 	cambioJson, err := json.Marshal(cambioVo)
@@ -52,7 +53,7 @@ func GetCambio(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	setRequest(w, cambioJson, cambioVo.StatusCode)
+	setRequest(w, cambioJson, cambioVo.Retorno.StatusCode)
 }
 
 func setRequest(w http.ResponseWriter, cambioJson []uint8, status int) {
