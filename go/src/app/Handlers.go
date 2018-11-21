@@ -33,13 +33,26 @@ func GetCambio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cambioJson, err := json.Marshal(listaDecambios)
+	fmt.Println(t)
+	var cambioVo CambioVO
+	if len(listaDecambios.ListaCambios) != 0 {
+		cambioVo.Cambios = listaDecambios.ListaCambios
+		cambioVo.QuantidadeCambio = len(listaDecambios.ListaCambios)
+		cambioVo.StatusCode = http.StatusOK
+		cambioVo.Mensagem = http.StatusText(200)
+	} else {
+		cambioVo.Cambios = listaDecambios.ListaCambios
+		cambioVo.QuantidadeCambio = len(listaDecambios.ListaCambios)
+		cambioVo.StatusCode = http.StatusNotFound
+		cambioVo.Mensagem = http.StatusText(404)
+	}
+
+	cambioJson, err := json.Marshal(cambioVo)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(t)
-	setRequest(w, cambioJson, http.StatusOK)
+	setRequest(w, cambioJson, cambioVo.StatusCode)
 }
 
 func setRequest(w http.ResponseWriter, cambioJson []uint8, status int) {
