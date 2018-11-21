@@ -15,7 +15,7 @@ func GetCambio(w http.ResponseWriter, r *http.Request) {
 	//tipoCambio := []TipoCambio{}
 	t, error := time.Parse("2006-01-02", params["data"])
 	if error != nil {
-		retorno := RetornoVo{Mensagem: "O parâmentro informado não corresponde a uma data válida no forma YYYY-MM-DD", StatusCode: 400, QuantidadeCambio: 0}
+		retorno := RetornoVo{Mensagem: "O parâmentro informado " + params["data"] + " não corresponde a uma data válida no forma YYYY-MM-DD", StatusCode: 400, QuantidadeCambio: 0}
 		errorValidate := &ErrorValidate{Retorno: retorno}
 		cambioJson, err := json.Marshal(errorValidate)
 		if err != nil {
