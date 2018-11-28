@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -16,6 +17,13 @@ type repositorioMock struct {
 func (r *repositorioMock) getCambio(cambios *cambios, data string) error {
 	//args := r.Called(cambios, data)
 	args := r.Called(cambios, data)
+	layout := "2006-12-30"
+	dataFormatada, err := time.Parse(layout, time.Now().Format("2018-11-21"))
+	if err != nil {
+		fmt.Println(err)
+	}
+	cambios.ListaCambios = append(cambios.ListaCambios, Cambio{Id: 1, Data: dataFormatada, TipoCambId: 1, ValorDestino: 3.0, ValorOrigem: 1.0})
+	cambios.ListaCambios = append(cambios.ListaCambios, Cambio{Id: 2, Data: dataFormatada, TipoCambId: 2, ValorDestino: 5.0, ValorOrigem: 1.0})
 	return args.Error(0)
 }
 
