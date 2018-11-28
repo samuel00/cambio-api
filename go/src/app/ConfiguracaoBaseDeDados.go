@@ -11,7 +11,7 @@ import (
 var db *gorm.DB
 
 const (
-	dbhost = "db"
+	dbhost = "172.23.0.1"
 	dbport = "5432"
 	dbuser = "usr_cambio"
 	dbpass = "123456"

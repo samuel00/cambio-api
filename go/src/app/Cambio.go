@@ -5,12 +5,12 @@ import (
 )
 
 type Cambio struct {
-	TipoCambio   TipoCambio `json:"tipoCambio,omitempty" gorm:"foreignkey:TipoCambId;association_foreignkey:TipoCambioId"`
-	TipoCambId   int        `gorm:"column:tc_tipo_cambio"`
-	Id           int        `json:"-" gorm:"primary_key;column:tc_id"`
-	Data         time.Time  `json:"data,omitempty" gorm:"column:tc_data"`
-	ValorOrigem  float64    `json:"valorOrigem,omitempty"  gorm:"column:tc_valor_origem"`
-	ValorDestino float64    `json:"valorDestino,omitempty"  gorm:"column:tc_valor_destino"`
+	Id           int       `json:"-" gorm:"primary_key;column:tc_id"`
+	Data         time.Time `json:"data,omitempty" gorm:"column:tc_data"`
+	ValorOrigem  float64   `json:"valorOrigem,omitempty"  gorm:"column:tc_valor_origem"`
+	ValorDestino float64   `json:"valorDestino,omitempty"  gorm:"column:tc_valor_destino"`
+	MoedaOrigem  string    `gorm:"column:tc_moeda_origem" json:"moedaOrigem,omitempty"`
+	MoedaDestino string    `gorm:"column:tc_moeda_destino" json:"moedaDestino,omitempty"`
 }
 
 func (cambio *Cambio) TableName() string {

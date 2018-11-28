@@ -22,8 +22,8 @@ func (r *repositorioMock) getCambio(cambios *cambios, data string) error {
 	if err != nil {
 		fmt.Println(err)
 	}
-	cambios.ListaCambios = append(cambios.ListaCambios, Cambio{Id: 1, Data: dataFormatada, TipoCambId: 1, ValorDestino: 3.0, ValorOrigem: 1.0})
-	cambios.ListaCambios = append(cambios.ListaCambios, Cambio{Id: 2, Data: dataFormatada, TipoCambId: 2, ValorDestino: 5.0, ValorOrigem: 1.0})
+	cambios.ListaCambios = append(cambios.ListaCambios, Cambio{Id: 1, Data: dataFormatada, MoedaOrigem: "USD", MoedaDestino: "BRL", ValorDestino: 3.0, ValorOrigem: 1.0})
+	cambios.ListaCambios = append(cambios.ListaCambios, Cambio{Id: 2, Data: dataFormatada, MoedaOrigem: "EUR", MoedaDestino: "BRL", ValorDestino: 5.0, ValorOrigem: 1.0})
 	return args.Error(0)
 }
 
